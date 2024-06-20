@@ -1,0 +1,30 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+        default_schema: database
+        jdbc:
+          time_zone: America/Sao_Paulo
+    show-sql: true
+  flyway:
+    locations: filesystem:src/main/resources/db/migration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/database?user=user&password=password
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 3
+      idle-timeout: 100
+      connection-timeout: 10000
+      max-lifetime: 120000
+server:
+  error:
+    include-stacktrace: on-param
+    include-exception: false
+    include-binding-errors: always
+    include-message: always
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:secret}
