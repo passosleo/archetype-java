@@ -1,23 +1,21 @@
 package dev.leopassos.archetype.domain.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import dev.leopassos.archetype.domain.enums.Role;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
-    private Long id;
-    private String name;
-    private String email;
-    private String password;
-    private String role;
-    private boolean enabled;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+public record User(
+        Long id,
+        String name,
+        String email,
+        String password,
+        Role role,
+        boolean enabled,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
+) {
+
+    public User(String name, String email, String password, Role role, boolean enabled) {
+        this(null, name, email, password, role, enabled, null, null);
+    }
 }

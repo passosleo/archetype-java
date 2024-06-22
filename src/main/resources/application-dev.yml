@@ -2,13 +2,12 @@ spring:
   jpa:
     properties:
       hibernate:
-        globally_quoted_identifiers: true
         format_sql: true
-        default_schema: database
         jdbc:
           time_zone: America/Sao_Paulo
     show-sql: true
   flyway:
+    enabled: true
     locations: filesystem:src/main/resources/db/migration
   datasource:
     url: jdbc:postgresql://localhost:5432/database?user=user&password=password
@@ -28,3 +27,5 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:secret}
+      expiration: ${JWT_EXPIRATION:604800}
+      issuer: ${JWT_ISSUER:issuer}

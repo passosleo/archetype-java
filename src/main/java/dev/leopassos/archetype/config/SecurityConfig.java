@@ -21,10 +21,11 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/swagger-ui/**").permitAll();
-                    req.requestMatchers("/v3/api-docs/**").permitAll();
-                    req.requestMatchers("/api/v1/health").authenticated();
+//                    req.requestMatchers("/swagger-ui/**").permitAll();
+//                    req.requestMatchers("/v3/api-docs/**").permitAll();
+//                    req.requestMatchers("/api/v1/health").authenticated();
 //                    req.anyRequest().authenticated();
+                    req.anyRequest().permitAll();
                 })
                 .build();
     }
