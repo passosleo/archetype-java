@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
-        log.info("Swagger available at http://localhost:8080/swagger-ui.html");
+        log.info("Swagger available at http://localhost:8080/swagger-ui/index.html");
         final Parameter acceptLanguageHeader = new Parameter()
                 .in(SecurityScheme.In.HEADER.toString())
                 .name("Accept-Language")
