@@ -1,11 +1,10 @@
-package dev.leopassos.archetype.infra.security;
+package dev.leopassos.archetype.infra.services.auth;
 
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
 import dev.leopassos.archetype.infra.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService implements UserDetailsService {
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
     private final IUserRepository userRepository;
 
     @Override

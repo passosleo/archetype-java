@@ -1,7 +1,8 @@
-package dev.leopassos.archetype.infra.security;
+package dev.leopassos.archetype.infra.services.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import dev.leopassos.archetype.application.services.auth.ITokenService;
 import dev.leopassos.archetype.domain.entities.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 @Service
-public class TokenService {
+public class TokenService implements ITokenService {
     private final long expiration;
     private final String issuer;
     private final Algorithm algorithm;
@@ -27,6 +28,7 @@ public class TokenService {
         this.algorithm = Algorithm.HMAC256(secret);
     }
 
+    @Override
     public String generateToken(User user) {
         LocalDateTime expiryDateTime = LocalDateTime.now().plusSeconds(expiration);
         Instant expiryInstant = expiryDateTime.toInstant(ZoneOffset.UTC);
@@ -46,6 +48,7 @@ public class TokenService {
                 .sign(algorithm);
     }
 
+    @Override
     public String getSubject(String token) {
         return JWT.require(algorithm)
                 .withIssuer(issuer)
@@ -54,7 +57,8 @@ public class TokenService {
                 .getSubject();
     }
 
-    public boolean isTokenValid(String token) {
+    @Override
+    public Boolean isTokenValid(String token) {
         try {
             JWT.require(algorithm)
                     .withIssuer(issuer)

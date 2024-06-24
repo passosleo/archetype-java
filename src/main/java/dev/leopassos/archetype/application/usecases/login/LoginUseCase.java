@@ -1,27 +1,29 @@
 package dev.leopassos.archetype.application.usecases.login;
 
-import dev.leopassos.archetype.infra.mappers.UserMapper;
-import dev.leopassos.archetype.infra.security.TokenService;
+import dev.leopassos.archetype.application.services.auth.IAuthService;
+import dev.leopassos.archetype.application.services.auth.ITokenService;
+import dev.leopassos.archetype.domain.entities.User;
+import dev.leopassos.archetype.presentation.dtos.login.CredentialsDTO;
 import dev.leopassos.archetype.presentation.dtos.login.LoginRequestDTO;
 import dev.leopassos.archetype.presentation.dtos.login.LoginResponseDTO;
-import dev.leopassos.archetype.presentation.dtos.user.UserDetailsDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LoginUseCase implements ILoginUseCase {
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+    private final IAuthService authService;
+    private final ITokenService tokenService;
 
     @Override
     public LoginResponseDTO execute(LoginRequestDTO data) {
-        UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(data.getEmail(), data.getPassword());
-        Authentication authentication = authenticationManager.authenticate(credentials);
-        String token = tokenService.generateToken(UserMapper.fromUserDetails((UserDetailsDTO) authentication.getPrincipal()));
+        User authenticatedUser = authService.authenticate(
+                CredentialsDTO.builder()
+                        .username(data.getEmail())
+                        .password(data.getPassword())
+                        .build()
+        );
+        String token = tokenService.generateToken(authenticatedUser);
         return LoginResponseDTO.builder()
                 .token(token)
                 .type("Bearer")

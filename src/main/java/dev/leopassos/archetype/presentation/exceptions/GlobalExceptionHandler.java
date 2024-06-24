@@ -22,18 +22,18 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleNotFoundException() {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ResponseDTO.of(HttpStatus.NOT_FOUND, ErrorDTO.of(1, "Entity not found")));
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<List<ValidationFieldError>>> handleBadRequestException(MethodArgumentNotValidException ex) {
         var errors = ex.getFieldErrors();
         return ResponseEntity
@@ -41,9 +41,9 @@ public class GlobalExceptionHandler {
                 .body(ResponseDTO.of(HttpStatus.BAD_REQUEST, errors.stream().map(ValidationFieldError::new).toList()));
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleBadRequestException(HttpMessageNotReadableException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -51,45 +51,45 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleBadCredentialsException() {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(ResponseDTO.of(HttpStatus.UNAUTHORIZED, ErrorDTO.of(1, "Invalid credentials")));
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleAuthenticationException(AuthenticationException ex) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(ResponseDTO.of(HttpStatus.UNAUTHORIZED, ErrorDTO.of(1, "Authentication failed: " + ex.getMessage())));
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleAccessDeniedException(AccessDeniedException ex) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(ResponseDTO.of(HttpStatus.FORBIDDEN, ErrorDTO.of(1, "Access denied: " + ex.getMessage())));
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(ResponseDTO.of(HttpStatus.CONFLICT, ErrorDTO.of(1, "Error: " + ex.getMostSpecificCause())));
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
     public ResponseEntity<ResponseDTO<ErrorDTO>> handleInternalServerError(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
