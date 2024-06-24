@@ -8,7 +8,7 @@ import dev.leopassos.archetype.infra.security.TokenService;
 import dev.leopassos.archetype.presentation.dtos.login.LoginResponseDTO;
 import dev.leopassos.archetype.presentation.dtos.signup.SignupRequestDTO;
 import dev.leopassos.archetype.presentation.dtos.signup.SignupResponseDTO;
-import dev.leopassos.archetype.presentation.dtos.user.UserResponseDTO;
+import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class SignupUseCase implements ISignupUseCase {
         ));
 
         return SignupResponseDTO.builder()
-                .user(UserResponseDTO.builder()
+                .user(UserInfoResponseDTO.builder()
                         .id(user.id())
                         .name(user.name())
                         .email(user.email())

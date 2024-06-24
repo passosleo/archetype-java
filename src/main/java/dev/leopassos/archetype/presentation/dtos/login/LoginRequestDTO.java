@@ -1,5 +1,6 @@
 package dev.leopassos.archetype.presentation.dtos.login;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -11,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginRequestDTO {
     @Email
+    @Schema(format = "email")
     private String email;
     @NotBlank
     private String password;

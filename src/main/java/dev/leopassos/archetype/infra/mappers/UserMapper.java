@@ -3,6 +3,7 @@ package dev.leopassos.archetype.infra.mappers;
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.infra.entities.UserEntity;
 import dev.leopassos.archetype.presentation.dtos.user.UserDetailsDTO;
+import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
 
 public class UserMapper {
     public static User fromEntity(UserEntity entity) {
@@ -50,6 +51,18 @@ public class UserMapper {
                 .name(user.name())
                 .email(user.email())
                 .password(user.password())
+                .role(user.role())
+                .enabled(user.enabled())
+                .createdAt(user.createdAt())
+                .updatedAt(user.updatedAt())
+                .build();
+    }
+
+    public static UserInfoResponseDTO toUserInfo(User user) {
+        return UserInfoResponseDTO.builder()
+                .id(user.id())
+                .name(user.name())
+                .email(user.email())
                 .role(user.role())
                 .enabled(user.enabled())
                 .createdAt(user.createdAt())
