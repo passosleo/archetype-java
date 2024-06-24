@@ -12,8 +12,6 @@ import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class SignupUseCase implements ISignupUseCase {
@@ -23,12 +21,6 @@ public class SignupUseCase implements ISignupUseCase {
 
     @Override
     public SignupResponseDTO execute(SignupRequestDTO data) {
-        Optional<User> userOptional = userRepository.findByEmail(data.getEmail());
-
-        if (userOptional.isPresent()) {
-            throw new RuntimeException("User already exists");
-        }
-
         User user = userRepository.save(new User(
                 data.getName(),
                 data.getEmail(),

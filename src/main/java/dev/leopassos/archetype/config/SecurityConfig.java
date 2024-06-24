@@ -1,5 +1,6 @@
 package dev.leopassos.archetype.config;
 
+import dev.leopassos.archetype.infra.security.AuthEntryPoint;
 import dev.leopassos.archetype.infra.security.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -32,6 +34,7 @@ public class SecurityConfig {
                     req.requestMatchers("/api/v1/health").permitAll();
                     req.anyRequest().authenticated();
                 })
+                .exceptionHandling(customizer -> customizer.authenticationEntryPoint(authenticationEntryPoint()))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -44,5 +47,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthEntryPoint();
     }
 }

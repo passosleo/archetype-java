@@ -29,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
         if (token != null) {
-            var subject = tokenService.getSubject(token);
+            String subject = tokenService.getSubject(token);
             Optional<User> user = userRepository.findByEmail(subject);
             if (user.isPresent()) {
                 UserDetailsDTO userDetails = UserMapper.toUserDetails(user.get());
