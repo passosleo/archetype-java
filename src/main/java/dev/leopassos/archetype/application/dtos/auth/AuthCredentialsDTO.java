@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.presentation.dtos.auth;
+package dev.leopassos.archetype.application.dtos.auth;
 
 import lombok.*;
 

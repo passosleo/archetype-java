@@ -2,9 +2,9 @@ package dev.leopassos.archetype.application.usecases.user;
 
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
+import dev.leopassos.archetype.infra.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.infra.mappers.UserMapper;
 import dev.leopassos.archetype.infra.security.SecurityUtils;
-import dev.leopassos.archetype.presentation.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

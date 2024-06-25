@@ -1,9 +1,9 @@
 package dev.leopassos.archetype.application.usecases.login.credentials;
 
+import dev.leopassos.archetype.application.dtos.auth.AuthCredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IAuthService;
 import dev.leopassos.archetype.application.services.auth.ITokenService;
 import dev.leopassos.archetype.domain.entities.User;
-import dev.leopassos.archetype.presentation.dtos.auth.AuthCredentialsDTO;
 import dev.leopassos.archetype.presentation.dtos.login.credentials.LoginWithCredentialsRequestDTO;
 import dev.leopassos.archetype.presentation.dtos.login.credentials.LoginWithCredentialsResponseDTO;
 import lombok.RequiredArgsConstructor;

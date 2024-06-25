@@ -1,9 +1,9 @@
 package dev.leopassos.archetype.application.usecases.login.github;
 
+import dev.leopassos.archetype.application.dtos.auth.OAuth2CredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IOAuth2Service;
 import dev.leopassos.archetype.application.services.auth.ITokenService;
 import dev.leopassos.archetype.domain.entities.User;
-import dev.leopassos.archetype.presentation.dtos.auth.OAuth2CredentialsDTO;
 import dev.leopassos.archetype.presentation.dtos.login.github.LoginWithGitHubRequestDTO;
 import dev.leopassos.archetype.presentation.dtos.login.github.LoginWithGitHubResponseDTO;
 import lombok.RequiredArgsConstructor;

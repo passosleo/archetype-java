@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.presentation.dtos.user;
+package dev.leopassos.archetype.infra.dtos.user;
 
 import dev.leopassos.archetype.domain.enums.Role;
 import lombok.*;

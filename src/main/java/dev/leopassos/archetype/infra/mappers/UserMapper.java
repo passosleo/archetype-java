@@ -1,8 +1,8 @@
 package dev.leopassos.archetype.infra.mappers;
 
 import dev.leopassos.archetype.domain.entities.User;
+import dev.leopassos.archetype.infra.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.infra.entities.UserEntity;
-import dev.leopassos.archetype.presentation.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
 
 public class UserMapper {

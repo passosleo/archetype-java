@@ -2,9 +2,9 @@ package dev.leopassos.archetype.infra.security;
 
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
+import dev.leopassos.archetype.infra.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.infra.mappers.UserMapper;
 import dev.leopassos.archetype.infra.services.auth.TokenService;
-import dev.leopassos.archetype.presentation.dtos.user.UserDetailsDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

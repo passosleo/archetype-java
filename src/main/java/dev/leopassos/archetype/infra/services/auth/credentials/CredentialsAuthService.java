@@ -1,10 +1,10 @@
 package dev.leopassos.archetype.infra.services.auth.credentials;
 
+import dev.leopassos.archetype.application.dtos.auth.AuthCredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IAuthService;
 import dev.leopassos.archetype.domain.entities.User;
+import dev.leopassos.archetype.infra.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.infra.mappers.UserMapper;
-import dev.leopassos.archetype.presentation.dtos.auth.AuthCredentialsDTO;
-import dev.leopassos.archetype.presentation.dtos.user.UserDetailsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
