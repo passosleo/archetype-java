@@ -5,7 +5,7 @@ import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.enums.Role;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
 import dev.leopassos.archetype.helpers.PasswordHasher;
-import dev.leopassos.archetype.presentation.dtos.login.LoginResponseDTO;
+import dev.leopassos.archetype.presentation.dtos.login.credentials.LoginWithCredentialsResponseDTO;
 import dev.leopassos.archetype.presentation.dtos.signup.SignupRequestDTO;
 import dev.leopassos.archetype.presentation.dtos.signup.SignupResponseDTO;
 import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
@@ -39,7 +39,7 @@ public class SignupUseCase implements ISignupUseCase {
                         .createdAt(user.createdAt())
                         .updatedAt(user.updatedAt())
                         .build())
-                .login(LoginResponseDTO.builder()
+                .login(LoginWithCredentialsResponseDTO.builder()
                         .token(tokenService.generateToken(user))
                         .type("Bearer")
                         .build())

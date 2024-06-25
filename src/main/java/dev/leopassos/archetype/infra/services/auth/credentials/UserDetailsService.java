@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.infra.services.auth;
+package dev.leopassos.archetype.infra.services.auth.credentials;
 
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
@@ -21,8 +21,8 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         if (user.isPresent()) {
             return UserMapper.toUserDetails(user.get());
+        } else {
+            throw new UsernameNotFoundException("User not found");
         }
-
-        throw new UsernameNotFoundException("User not found");
     }
 }

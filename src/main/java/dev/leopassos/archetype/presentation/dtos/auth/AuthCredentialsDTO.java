@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.presentation.dtos.login;
+package dev.leopassos.archetype.presentation.dtos.auth;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CredentialsDTO {
+public class AuthCredentialsDTO {
     private String username;
     private String password;
 }
