@@ -50,13 +50,28 @@ public class HttpClient {
 
     public HttpResponse<String> post(String uri, Object object) throws IOException,
             InterruptedException {
-        String body = objectMapper.writeValueAsString(object);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString(body))
+                .method("POST", HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(object)))
                 .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public HttpResponse<String> post(String uri, Object body, Map<String, String> headers) throws IOException,
+            InterruptedException {
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json");
+
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            requestBuilder.header(entry.getKey(), entry.getValue());
+        }
+
+        HttpRequest request = requestBuilder.POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body))).build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }

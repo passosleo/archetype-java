@@ -25,8 +25,8 @@ public class GitHubOAuth2Client implements IOAuth2Client {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    @Value("${spring.security.oauth2.client.registration.github.base-url}")
-    private String baseUrl;
+    @Value("${spring.security.oauth2.client.registration.github.token-uri}")
+    private String tokenUri;
     @Value("${spring.security.oauth2.client.registration.github.user-info-uri}")
     private String userInfoUri;
 
@@ -34,14 +34,14 @@ public class GitHubOAuth2Client implements IOAuth2Client {
     @Override
     public String getAccessToken(OAuth2CredentialsDTO credentials) {
         try {
-            HttpResponse<String> response = httpClient.post(baseUrl + "/login/oauth/access_token", credentials);
+            HttpResponse<String> response = httpClient.post(tokenUri, credentials);
             if (response.statusCode() == HttpStatus.OK.value()) {
                 GitHubAccessTokenDTO data = objectMapper.readValue(response.body(), new TypeReference<>() {
                 });
-                return data.getAccessToken();
-            } else {
-                throw new RuntimeException("Failed to get access token, status code: " + response.statusCode());
+                String accessToken = data.getAccessToken();
+                if (accessToken != null) return accessToken;
             }
+            throw new RuntimeException("Failed to get access token");
         } catch (Exception ex) {
             log.info("Erro ao conectar com GitHub: {}", ex.getMessage());
             throw new RuntimeException(ex.getMessage());
@@ -61,9 +61,8 @@ public class GitHubOAuth2Client implements IOAuth2Client {
                         .findFirst()
                         .orElseThrow()
                         .getEmail();
-            } else {
-                throw new RuntimeException("Failed to get user email, status code: " + response.statusCode());
             }
+            throw new RuntimeException("Failed to get user email, status code: " + response.statusCode());
         } catch (Exception ex) {
             log.info("Erro ao conectar com GitHub: {}", ex.getMessage());
             throw new RuntimeException(ex.getMessage());
