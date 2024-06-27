@@ -4,19 +4,17 @@ import dev.leopassos.archetype.application.dtos.auth.OAuth2CredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IOAuth2Service;
 import dev.leopassos.archetype.application.services.auth.ITokenService;
 import dev.leopassos.archetype.domain.entities.User;
-import dev.leopassos.archetype.presentation.dtos.login.github.LoginWithGitHubRequestDTO;
-import dev.leopassos.archetype.presentation.dtos.login.github.LoginWithGitHubResponseDTO;
-import lombok.RequiredArgsConstructor;
+import dev.leopassos.archetype.presentation.dtos.login.LoginProviderRequestDTO;
+import dev.leopassos.archetype.presentation.dtos.login.LoginResponseDTO;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class LoginWithGitHubUseCase implements ILoginWithGitHubUseCase {
+public class LoginGitHubUseCase implements ILoginGitHubUseCase {
 
     private final IOAuth2Service authService;
     private final ITokenService tokenService;
-
 
     @Value("${spring.security.oauth2.client.registration.github.client-id}")
     private String clientId;
@@ -24,8 +22,13 @@ public class LoginWithGitHubUseCase implements ILoginWithGitHubUseCase {
     @Value("${spring.security.oauth2.client.registration.github.client-secret}")
     private String clientSecret;
 
+    public LoginGitHubUseCase(@Qualifier("github") IOAuth2Service authService, ITokenService tokenService) {
+        this.authService = authService;
+        this.tokenService = tokenService;
+    }
+
     @Override
-    public LoginWithGitHubResponseDTO execute(LoginWithGitHubRequestDTO data) {
+    public LoginResponseDTO execute(LoginProviderRequestDTO data) {
         User authenticatedUser = authService.authenticate(
                 OAuth2CredentialsDTO.builder()
                         .clientId(clientId)
@@ -35,7 +38,7 @@ public class LoginWithGitHubUseCase implements ILoginWithGitHubUseCase {
                         .build()
         );
         String token = tokenService.generateToken(authenticatedUser);
-        return LoginWithGitHubResponseDTO.builder()
+        return LoginResponseDTO.builder()
                 .token(token)
                 .type("Bearer")
                 .build();

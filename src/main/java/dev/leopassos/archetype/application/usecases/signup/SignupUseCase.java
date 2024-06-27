@@ -5,7 +5,7 @@ import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.enums.Role;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
 import dev.leopassos.archetype.helpers.PasswordHasher;
-import dev.leopassos.archetype.presentation.dtos.login.credentials.LoginWithCredentialsResponseDTO;
+import dev.leopassos.archetype.presentation.dtos.login.LoginResponseDTO;
 import dev.leopassos.archetype.presentation.dtos.signup.SignupRequestDTO;
 import dev.leopassos.archetype.presentation.dtos.signup.SignupResponseDTO;
 import dev.leopassos.archetype.presentation.dtos.user.UserInfoResponseDTO;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class SignupUseCase implements ISignupUseCase {
 
     private final IUserRepository userRepository;
-    private final ITokenService tokenService;
+    private final ITokenService ITokenService;
 
     @Override
     public SignupResponseDTO execute(SignupRequestDTO data) {
@@ -39,8 +39,8 @@ public class SignupUseCase implements ISignupUseCase {
                         .createdAt(user.createdAt())
                         .updatedAt(user.updatedAt())
                         .build())
-                .login(LoginWithCredentialsResponseDTO.builder()
-                        .token(tokenService.generateToken(user))
+                .login(LoginResponseDTO.builder()
+                        .token(ITokenService.generateToken(user))
                         .type("Bearer")
                         .build())
                 .build();

@@ -4,20 +4,20 @@ import dev.leopassos.archetype.application.dtos.auth.AuthCredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IAuthService;
 import dev.leopassos.archetype.application.services.auth.ITokenService;
 import dev.leopassos.archetype.domain.entities.User;
-import dev.leopassos.archetype.presentation.dtos.login.credentials.LoginWithCredentialsRequestDTO;
-import dev.leopassos.archetype.presentation.dtos.login.credentials.LoginWithCredentialsResponseDTO;
+import dev.leopassos.archetype.presentation.dtos.login.LoginCredentialsRequestDTO;
+import dev.leopassos.archetype.presentation.dtos.login.LoginResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoginWithCredentialsUseCase implements ILoginWithCredentialsUseCase {
+public class LoginCredentialsUseCase implements ILoginCredentialsUseCase {
 
     private final IAuthService authService;
     private final ITokenService tokenService;
 
     @Override
-    public LoginWithCredentialsResponseDTO execute(LoginWithCredentialsRequestDTO data) {
+    public LoginResponseDTO execute(LoginCredentialsRequestDTO data) {
         User authenticatedUser = authService.authenticate(
                 AuthCredentialsDTO.builder()
                         .username(data.getEmail())
@@ -25,7 +25,7 @@ public class LoginWithCredentialsUseCase implements ILoginWithCredentialsUseCase
                         .build()
         );
         String token = tokenService.generateToken(authenticatedUser);
-        return LoginWithCredentialsResponseDTO.builder()
+        return LoginResponseDTO.builder()
                 .token(token)
                 .type("Bearer")
                 .build();

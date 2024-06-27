@@ -1,10 +1,10 @@
 package dev.leopassos.archetype.infra.security;
 
+import dev.leopassos.archetype.application.services.auth.ITokenService;
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
 import dev.leopassos.archetype.infra.dtos.user.UserDetailsDTO;
 import dev.leopassos.archetype.infra.mappers.UserMapper;
-import dev.leopassos.archetype.infra.services.auth.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
+    private final ITokenService tokenService;
     private final IUserRepository userRepository;
 
     @Override

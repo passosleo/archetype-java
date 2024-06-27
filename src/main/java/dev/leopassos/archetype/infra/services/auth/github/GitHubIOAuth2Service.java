@@ -5,19 +5,22 @@ import dev.leopassos.archetype.application.dtos.auth.OAuth2CredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IOAuth2Service;
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
+@Qualifier("github")
 @Service
-@RequiredArgsConstructor
-public class GitHubOAuth2Service implements IOAuth2Service {
-
+public class GitHubIOAuth2Service implements IOAuth2Service {
     private final IOAuth2Client authClient;
     private final IUserRepository userRepository;
+
+    public GitHubIOAuth2Service(@Qualifier("github") IOAuth2Client authClient, IUserRepository userRepository) {
+        this.authClient = authClient;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public User authenticate(OAuth2CredentialsDTO credentials) {

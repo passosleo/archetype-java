@@ -13,18 +13,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRepositoryJpa implements IUserRepository {
 
-    private final IUserRepositoryJpa userRepositoryJpa;
+    private final IUserRepositoryJpa userRepository;
 
     @Override
     public Optional<User> findByEmail(String email) {
-        Optional<UserEntity> userEntity = userRepositoryJpa.findByEmail(email);
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
         return userEntity.map(UserMapper::fromEntity);
     }
 
     @Override
     public User save(User user) {
         UserEntity userEntity = UserMapper.toEntity(user);
-        UserEntity savedUserEntity = userRepositoryJpa.save(userEntity);
+        UserEntity savedUserEntity = userRepository.save(userEntity);
         return UserMapper.fromEntity(savedUserEntity);
     }
 }

@@ -1,6 +1,8 @@
 package dev.leopassos.archetype.infra.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.leopassos.archetype.application.clients.IHttpClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -10,16 +12,11 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 @Service
-public class HttpClient {
+@RequiredArgsConstructor
+public class HttpClient implements IHttpClient {
 
     private final java.net.http.HttpClient client;
     private final ObjectMapper objectMapper;
-
-    public HttpClient() {
-        client = java.net.http.HttpClient.newHttpClient();
-        objectMapper = new ObjectMapper();
-    }
-
 
     public HttpResponse<String> get(String uri) throws IOException,
             InterruptedException {

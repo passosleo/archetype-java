@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CredentialsAuthService implements IAuthService {
+public class CredentialsIAuthService implements IAuthService {
 
     private final AuthenticationManager authenticationManager;
 

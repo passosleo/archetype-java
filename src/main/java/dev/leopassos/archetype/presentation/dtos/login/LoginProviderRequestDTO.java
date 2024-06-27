@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.presentation.dtos.login.github;
+package dev.leopassos.archetype.presentation.dtos.login;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginWithGitHubRequestDTO {
+public class LoginProviderRequestDTO {
     @NotBlank
     private String clientId;
     @NotBlank

@@ -2,27 +2,29 @@ package dev.leopassos.archetype.infra.clients.auth.github;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.leopassos.archetype.application.clients.IHttpClient;
 import dev.leopassos.archetype.application.clients.auth.IOAuth2Client;
 import dev.leopassos.archetype.application.dtos.auth.OAuth2CredentialsDTO;
-import dev.leopassos.archetype.infra.clients.HttpClient;
 import dev.leopassos.archetype.infra.dtos.auth.github.GitHubAccessTokenDTO;
 import dev.leopassos.archetype.infra.dtos.auth.github.GitHubUserEmailDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Service
+@Component
+@Qualifier("github")
 @RequiredArgsConstructor
-public class GitHubOAuth2Client implements IOAuth2Client {
+public class GitHubIOAuth2Client implements IOAuth2Client {
 
-    private final HttpClient httpClient;
+    private final IHttpClient httpClient;
     private final ObjectMapper objectMapper;
 
     @Value("${spring.security.oauth2.client.registration.github.token-uri}")
