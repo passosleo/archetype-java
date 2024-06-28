@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.infra.services.auth.credentials;
+package dev.leopassos.archetype.infra.services.auth.user;
 
 import dev.leopassos.archetype.domain.entities.User;
 import dev.leopassos.archetype.domain.repositories.IUserRepository;

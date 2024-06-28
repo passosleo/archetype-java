@@ -1,13 +1,62 @@
-spring.datasource.url: jdbc:h2:mem:test
-spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.H2Dialect
-spring.flyway.enabled: false
 spring:
+  hibernate:
+    ddl-auto: create-drop
   jpa:
     properties:
       hibernate:
-        globally_quoted_identifiers: true
         format_sql: true
-        dialect: org.hibernate.dialect.H2Dialect
+        jdbc:
+          time_zone: America/Sao_Paulo
     show-sql: true
-    hibernate:
-      ddl-auto: create-drop
+  flyway:
+    enabled: false
+    locations: filesystem:src/main/resources/db/migration
+  datasource:
+    url: jdbc:h2:mem:test
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: your-id-here
+            client-secret: your-secret-here
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:3000/login/oauth2/code/github"
+          facebook:
+            client-id: your-id-here
+            client-secret: your-secret-here
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:3000/login/oauth2/code/facebook"
+          linkedin:
+            client-id: your-id-here
+            client-secret: your-secret-here
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:3000/login/oauth2/code/linkedin"
+        provider:
+          github:
+            scope: read:user
+            client-authentication-method: post
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: id
+          facebook:
+            scope: email
+            client-authentication-method: post
+            authorization-uri: https://www.facebook.com/v20.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v20.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/v20.0/me
+            user-name-attribute: id
+          linkedin:
+            scope: openid%20email%20profile
+            client-authentication-method: post
+            authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+            token-uri: https://www.linkedin.com/oauth/v2/accessToken
+            user-info-uri: https://api.linkedin.com/v2/userinfo
+            user-name-attribute: id
+api:
+  security:
+    token:
+      secret: secret
+      expiration: 604800
+      issuer: issuer

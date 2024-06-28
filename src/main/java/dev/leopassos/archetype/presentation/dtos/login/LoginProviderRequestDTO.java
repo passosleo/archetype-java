@@ -10,8 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginProviderRequestDTO {
     @NotBlank
-    private String clientId;
-    @NotBlank
     private String code;
     @NotBlank
     private String redirectUri;

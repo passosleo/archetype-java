@@ -1,4 +1,4 @@
-package dev.leopassos.archetype.infra.services.auth.credentials;
+package dev.leopassos.archetype.infra.services.auth;
 
 import dev.leopassos.archetype.application.dtos.auth.AuthCredentialsDTO;
 import dev.leopassos.archetype.application.services.auth.IAuthService;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CredentialsIAuthService implements IAuthService {
+public class AuthService implements IAuthService {
 
     private final AuthenticationManager authenticationManager;
 
