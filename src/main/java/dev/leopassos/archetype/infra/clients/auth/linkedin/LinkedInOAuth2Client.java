@@ -1,12 +1,13 @@
-package dev.leopassos.archetype.infra.clients.auth.facebook;
+package dev.leopassos.archetype.infra.clients.auth.linkedin;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.leopassos.archetype.application.clients.IHttpClient;
 import dev.leopassos.archetype.application.clients.auth.IOAuth2Client;
 import dev.leopassos.archetype.application.dtos.auth.OAuth2CredentialsDTO;
-import dev.leopassos.archetype.infra.dtos.auth.facebook.FacebookAccessTokenDTO;
-import dev.leopassos.archetype.infra.dtos.auth.facebook.FacebookUserEmailDTO;
+import dev.leopassos.archetype.helpers.Helpers;
+import dev.leopassos.archetype.infra.dtos.auth.linkedin.LinkedInAccessTokenDTO;
+import dev.leopassos.archetype.infra.dtos.auth.linkedin.LinkedInUserEmailDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,25 +19,34 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 @Slf4j
+@Qualifier("linkedin")
 @Component
-@Qualifier("facebook")
 @RequiredArgsConstructor
-public class FacebookIOAuth2Client implements IOAuth2Client {
+public class LinkedInOAuth2Client implements IOAuth2Client {
 
     private final IHttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    @Value("${spring.security.oauth2.client.registration.facebook.token-uri}")
+    @Value("${spring.security.oauth2.client.provider.linkedin.token-uri}")
     private String tokenUri;
-    @Value("${spring.security.oauth2.client.registration.facebook.user-info-uri}")
+    @Value("${spring.security.oauth2.client.provider.linkedin.user-info-uri}")
     private String userInfoUri;
+
 
     @Override
     public String getAccessToken(OAuth2CredentialsDTO credentials) {
         try {
-            HttpResponse<String> response = httpClient.post(tokenUri, credentials);
+            Map<String, String> body = Map.of(
+                    "client_id", credentials.getClientId(),
+                    "client_secret", credentials.getClientSecret(),
+                    "code", credentials.getCode(),
+                    "redirect_uri", credentials.getRedirectUri(),
+                    "grant_type", credentials.getGrantType()
+            );
+            var headers = Map.of("Content-Type", "application/x-www-form-urlencoded");
+            HttpResponse<String> response = httpClient.post(tokenUri, Helpers.encodeFormData(body), headers);
             if (response.statusCode() == HttpStatus.OK.value()) {
-                FacebookAccessTokenDTO data = objectMapper.readValue(response.body(), new TypeReference<>() {
+                LinkedInAccessTokenDTO data = objectMapper.readValue(response.body(), new TypeReference<>() {
                 });
                 String accessToken = data.getAccessToken();
                 if (accessToken != null) return accessToken;
@@ -51,10 +61,10 @@ public class FacebookIOAuth2Client implements IOAuth2Client {
     @Override
     public String getUsername(String accessToken) {
         try {
-            var authorizationHeader = Map.of("Authorization", "Bearer " + accessToken);
-            HttpResponse<String> response = httpClient.get(userInfoUri + "?fields=name,email", authorizationHeader);
+            var authorizationHeader = Map.of("Authorization", String.format("Bearer %s", accessToken));
+            HttpResponse<String> response = httpClient.get(userInfoUri, authorizationHeader);
             if (response.statusCode() == HttpStatus.OK.value()) {
-                FacebookUserEmailDTO data = objectMapper.readValue(response.body(), new TypeReference<>() {
+                LinkedInUserEmailDTO data = objectMapper.readValue(response.body(), new TypeReference<>() {
                 });
                 return data.getEmail();
             }

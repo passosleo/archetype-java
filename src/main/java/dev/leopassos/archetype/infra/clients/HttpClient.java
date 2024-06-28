@@ -2,7 +2,6 @@ package dev.leopassos.archetype.infra.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.leopassos.archetype.application.clients.IHttpClient;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,18 +11,31 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class HttpClient implements IHttpClient {
 
     private final java.net.http.HttpClient client;
     private final ObjectMapper objectMapper;
 
-    public HttpResponse<String> get(String uri) throws IOException,
-            InterruptedException {
+    private static final String DEFAULT_CONTENT_TYPE = "application/json";
+
+    public HttpClient() {
+        this.client = java.net.http.HttpClient.newHttpClient();
+        this.objectMapper = new ObjectMapper();
+    }
+
+    private void configureHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (!headers.containsKey("Content-Type")) {
+            builder.header("Content-Type", DEFAULT_CONTENT_TYPE);
+        }
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            builder.header(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public HttpResponse<String> get(String uri) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
+                .header("Content-Type", DEFAULT_CONTENT_TYPE)
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
 
@@ -31,45 +43,26 @@ public class HttpClient implements IHttpClient {
     }
 
     public HttpResponse<String> get(String uri, Map<String, String> headers) throws IOException, InterruptedException {
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json");
-
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            requestBuilder.header(entry.getKey(), entry.getValue());
-        }
-
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(uri));
+        configureHeaders(requestBuilder, headers);
         HttpRequest request = requestBuilder.GET().build();
-
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public HttpResponse<String> post(String uri, Object object) throws IOException,
-            InterruptedException {
+    public HttpResponse<String> post(String uri, Object body) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(object)))
+                .header("Content-Type", DEFAULT_CONTENT_TYPE)
+                .method("POST", HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)))
                 .build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public HttpResponse<String> post(String uri, Object body, Map<String, String> headers) throws IOException,
-            InterruptedException {
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json");
-
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            requestBuilder.header(entry.getKey(), entry.getValue());
-        }
-
-        HttpRequest request = requestBuilder.POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body))).build();
-
+    public HttpResponse<String> post(String uri, Object body, Map<String, String> headers) throws IOException, InterruptedException {
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(uri));
+        configureHeaders(requestBuilder, headers);
+        HttpRequest request = requestBuilder.POST(HttpRequest.BodyPublishers.ofString((String) body)).build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
