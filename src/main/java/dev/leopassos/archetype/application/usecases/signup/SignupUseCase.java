@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class SignupUseCase implements ISignupUseCase {
 
     private final IUserRepository userRepository;
-    private final ITokenService ITokenService;
+    private final ITokenService tokenService;
 
     @Override
     public SignupResponseDTO execute(SignupRequestDTO data) {
@@ -40,7 +40,7 @@ public class SignupUseCase implements ISignupUseCase {
                         .updatedAt(user.updatedAt())
                         .build())
                 .login(LoginResponseDTO.builder()
-                        .token(ITokenService.generateToken(user))
+                        .token(tokenService.generateToken(user))
                         .type("Bearer")
                         .build())
                 .build();

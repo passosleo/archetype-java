@@ -36,7 +36,8 @@ public class GitHubOAuth2Client implements IOAuth2Client {
     @Override
     public String getAccessToken(OAuth2CredentialsDTO credentials) {
         try {
-            HttpResponse<String> response = httpClient.post(tokenUri, credentials);
+            var headers = Map.of("Accept", "application/json");
+            HttpResponse<String> response = httpClient.post(tokenUri, credentials, headers);
             if (response.statusCode() == HttpStatus.OK.value()) {
                 GitHubAccessTokenDTO data = objectMapper.readValue(response.body(), new TypeReference<>() {
                 });
@@ -53,8 +54,11 @@ public class GitHubOAuth2Client implements IOAuth2Client {
     @Override
     public String getUsername(String accessToken) {
         try {
-            var authorizationHeader = Map.of("Authorization", "Bearer " + accessToken);
-            HttpResponse<String> response = httpClient.get(userInfoUri + "/emails", authorizationHeader);
+            var headers = Map.of(
+                    "Authorization", String.format("Bearer %s", accessToken),
+                    "Accept", "application/json"
+            );
+            HttpResponse<String> response = httpClient.get(userInfoUri + "/emails", headers);
             if (response.statusCode() == HttpStatus.OK.value()) {
                 List<GitHubUserEmailDTO> data = objectMapper.readValue(response.body(), new TypeReference<>() {
                 });

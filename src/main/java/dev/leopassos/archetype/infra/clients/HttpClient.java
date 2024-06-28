@@ -53,7 +53,8 @@ public class HttpClient implements IHttpClient {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .header("Content-Type", DEFAULT_CONTENT_TYPE)
-                .method("POST", HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)))
+                .method("POST", HttpRequest.BodyPublishers.ofString(
+                        body instanceof String ? (String) body : objectMapper.writeValueAsString(body)))
                 .build();
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -62,7 +63,8 @@ public class HttpClient implements IHttpClient {
     public HttpResponse<String> post(String uri, Object body, Map<String, String> headers) throws IOException, InterruptedException {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(uri));
         configureHeaders(requestBuilder, headers);
-        HttpRequest request = requestBuilder.POST(HttpRequest.BodyPublishers.ofString((String) body)).build();
+        HttpRequest request = requestBuilder.POST(HttpRequest.BodyPublishers.ofString(
+                body instanceof String ? (String) body : objectMapper.writeValueAsString(body))).build();
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
